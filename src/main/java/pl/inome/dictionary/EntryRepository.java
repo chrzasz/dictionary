@@ -1,21 +1,26 @@
 package pl.inome.dictionary;
 
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 @Repository
 public class EntryRepository {
 
     private List<Entry> entries;
+    private FileService fileService;
 
-    EntryRepository() {
-        this.entries = new ArrayList<>();
-        entries.add(new Entry("aaa", "aaa"));
-        System.out.println("all entries:" + entries);
+    @Autowired
+    EntryRepository(FileService fileService) {
+        this.fileService = fileService;
+        try {
+            this.entries = fileService.readAllFile();
+            System.out.println("all entries:" + entries);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     List<Entry> getEntries() {
