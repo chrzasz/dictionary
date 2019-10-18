@@ -17,7 +17,6 @@ public class EntryRepository {
         this.fileService = fileService;
         try {
             this.entries = fileService.readAllFile();
-            System.out.println("all entries:" + entries);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,6 +28,14 @@ public class EntryRepository {
 
     void setEntries(List<Entry> entries) {
         this.entries = entries;
+    }
+
+    boolean isEmpty() {
+        return entries.isEmpty();
+    }
+
+    int size() {
+        return entries.size();
     }
 
 }
