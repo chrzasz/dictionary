@@ -34,6 +34,10 @@ public class EntryRepository {
     }
 
     void add(Entry entry) {
+        if (entry.getOriginal().isEmpty() ||
+                entry.getTranslation().isEmpty())
+            return;
+
         entries.add(entry);
         try {
             fileService.saveEntries(entries);

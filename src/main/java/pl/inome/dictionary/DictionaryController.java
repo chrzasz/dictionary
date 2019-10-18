@@ -12,6 +12,7 @@ class DictionaryController {
 
     private EntryRepository repository;
     private Scanner scanner;
+    private ConsoleOutputWriter consoleOutputWriter;
 
     private static final int UNDEFINED = -1;
     private static final int ADD_ENTRY = 0;
@@ -19,13 +20,14 @@ class DictionaryController {
     private static final int CLOSE_APP = 2;
 
     @Autowired
-    DictionaryController(EntryRepository repository, Scanner scanner) {
+    DictionaryController(EntryRepository repository, Scanner scanner, ConsoleOutputWriter consoleOutputWriter) {
         this.repository = repository;
         this.scanner = scanner;
+        this.consoleOutputWriter = consoleOutputWriter;
     }
 
     void mainLoop() {
-        System.out.println("Witaj w aplikacji słownika");
+        consoleOutputWriter.println("Witaj w aplikacji słownika");
         int option = UNDEFINED;
         while (option != CLOSE_APP) {
             printMenu();
@@ -46,29 +48,29 @@ class DictionaryController {
                 closeApp();
                 break;
             default:
-                System.out.println("Opcja niezdefiniowana");
+                consoleOutputWriter.println("Opcja niezdefiniowana");
         }
     }
 
     private void closeApp() {
         repository.setEntries(repository.getEntries());
-        System.out.println("Bye Bye!");
+        consoleOutputWriter.println("Bye Bye!");
     }
 
     private void addEntry() {
-        System.out.println("Podaj oryginalną frazę");
+        consoleOutputWriter.println("Podaj oryginalną frazę");
         String original = scanner.nextLine();
-        System.out.println("Podaj tłumaczenie");
+        consoleOutputWriter.println("Podaj tłumaczenie");
         String translation = scanner.nextLine();
         Entry entry = new Entry(original, translation);
         repository.add(entry);
     }
 
     private void printMenu() {
-        System.out.println("Wybierz opcję:");
-        System.out.println("0 - Dodaj frazę");
-        System.out.println("1 - Test");
-        System.out.println("2 - Koniec programu");
+        consoleOutputWriter.println("Wybierz opcję:");
+        consoleOutputWriter.println("0 - Dodaj frazę");
+        consoleOutputWriter.println("1 - Test");
+        consoleOutputWriter.println("2 - Koniec programu");
     }
 
     private int chooseOption() {
@@ -89,23 +91,23 @@ class DictionaryController {
 
     private void test() {
         if (repository.isEmpty()) {
-            System.out.println("brak słówek w bazie!");
+            consoleOutputWriter.println("brak słówek w bazie!");
             return;
         }
         final int testSize = Math.min(repository.size(), 3);
         Set<Entry> randomEntries = repository.getRandomEntries(testSize);
         int score = 0;
         for (Entry entry : randomEntries) {
-            System.out.printf("Podaj tłumaczenie dla :\"%s\"\n", entry.getOriginal());
+            consoleOutputWriter.println(String.format("Podaj tłumaczenie dla :\"%s\"\n", entry.getOriginal()));
             String translation = scanner.nextLine();
             if (entry.getTranslation().equalsIgnoreCase(translation)) {
-                System.out.println("Odpowiedź poprawna");
+                consoleOutputWriter.println("Odpowiedź poprawna");
                 score++;
             } else {
-                System.out.println("Odpowiedź niepoprawna - " + entry.getTranslation());
+                consoleOutputWriter.println("Odpowiedź niepoprawna - " + entry.getTranslation());
             }
         }
-        System.out.printf("Twój wynik: %d/%d\n", score, testSize);
+        consoleOutputWriter.println(String.format("Twój wynik: %d/%d\n", score, testSize));
     }
 
 
