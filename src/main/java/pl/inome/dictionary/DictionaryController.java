@@ -1,6 +1,7 @@
 package pl.inome.dictionary;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import java.util.InputMismatchException;
@@ -13,6 +14,7 @@ class DictionaryController {
     private EntryRepository repository;
     private Scanner scanner;
     private ConsoleOutputWriter consoleOutputWriter;
+    private int noOfTests;
 
     private static final int UNDEFINED = -1;
     private static final int ADD_ENTRY = 0;
@@ -20,10 +22,14 @@ class DictionaryController {
     private static final int CLOSE_APP = 2;
 
     @Autowired
-    DictionaryController(EntryRepository repository, Scanner scanner, ConsoleOutputWriter consoleOutputWriter) {
+    DictionaryController(EntryRepository repository,
+                         Scanner scanner,
+                         ConsoleOutputWriter consoleOutputWriter,
+                         @Value("${dictionary-test.count}") int noOfTests) {
         this.repository = repository;
         this.scanner = scanner;
         this.consoleOutputWriter = consoleOutputWriter;
+        this.noOfTests = noOfTests;
     }
 
     void mainLoop() {
@@ -53,7 +59,7 @@ class DictionaryController {
     }
 
     private void closeApp() {
-        repository.setEntries(repository.getEntries());
+//        repository.setEntries(repository.getEntries());
         consoleOutputWriter.println("Bye Bye!");
     }
 
@@ -94,7 +100,7 @@ class DictionaryController {
             consoleOutputWriter.println("brak słówek w bazie!");
             return;
         }
-        final int testSize = Math.min(repository.size(), 3);
+        final int testSize = Math.min(repository.size(), noOfTests);
         Set<Entry> randomEntries = repository.getRandomEntries(testSize);
         int score = 0;
         for (Entry entry : randomEntries) {
