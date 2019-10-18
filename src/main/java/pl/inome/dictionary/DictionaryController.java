@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Set;
 
 @Controller
 class DictionaryController {
@@ -91,9 +92,10 @@ class DictionaryController {
             System.out.println("brak słówek w bazie!");
             return;
         }
-        final int testSize = repository.size();
+        final int testSize = Math.min(repository.size(), 3);
+        Set<Entry> randomEntries = repository.getRandomEntries(testSize);
         int score = 0;
-        for (Entry entry : repository.getEntries()) {
+        for (Entry entry : randomEntries) {
             System.out.printf("Podaj tłumaczenie dla :\"%s\"\n", entry.getOriginal());
             String translation = scanner.nextLine();
             if (entry.getTranslation().equalsIgnoreCase(translation)) {

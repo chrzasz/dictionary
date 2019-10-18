@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 @Repository
 public class EntryRepository {
@@ -47,4 +50,13 @@ public class EntryRepository {
         return entries.size();
     }
 
+    Set<Entry> getRandomEntries(int testSize) {
+        Random random = new Random();
+        Set<Entry> randomEntries = new HashSet<>();
+        while (randomEntries.size() < testSize &&
+                randomEntries.size() < entries.size()) {
+            randomEntries.add(entries.get(random.nextInt(entries.size())));
+        }
+        return randomEntries;
+    }
 }
