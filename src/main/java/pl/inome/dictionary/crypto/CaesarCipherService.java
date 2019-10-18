@@ -12,7 +12,7 @@ class CaesarCipherService implements CipherService {
     @Override
     public String encrypt(String text) {
         return text.chars()
-                .map(CaesarCipherService::shift)
+                .map(i -> i + SHIFT)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
     }
@@ -20,16 +20,10 @@ class CaesarCipherService implements CipherService {
     @Override
     public String decrypt(String cipher) {
         return cipher.chars()
-                .map(CaesarCipherService::shiftBack)
+                .map(x -> x - SHIFT)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
     }
 
-    private static int shift(int i) {
-        return i + SHIFT;
-    }
 
-    private static int shiftBack(int i) {
-        return i - SHIFT;
-    }
 }
