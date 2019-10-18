@@ -30,6 +30,15 @@ public class EntryRepository {
         this.entries = entries;
     }
 
+    void add(Entry entry) {
+        entries.add(entry);
+        try {
+            fileService.saveEntries(entries);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     boolean isEmpty() {
         return entries.isEmpty();
     }

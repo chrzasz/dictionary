@@ -5,7 +5,7 @@ class Entry {
     private String original;
     private String translation;
 
-    public Entry() {
+    Entry() {
     }
 
     Entry(String original, String translation) {
@@ -13,7 +13,7 @@ class Entry {
         this.translation = translation;
     }
 
-    public String getOriginal() {
+    String getOriginal() {
         return original;
     }
 
@@ -21,7 +21,7 @@ class Entry {
         this.original = original;
     }
 
-    public String getTranslation() {
+    String getTranslation() {
         return translation;
     }
 
@@ -31,9 +31,6 @@ class Entry {
 
     @Override
     public String toString() {
-        return "Entry{" +
-                "original='" + original + '\'' +
-                ", translation='" + translation + '\'' +
-                '}';
+        return original + ";" + translation;
     }
 }

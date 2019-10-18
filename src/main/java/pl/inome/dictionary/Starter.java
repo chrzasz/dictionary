@@ -14,7 +14,12 @@ class Starter implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        dictionaryController.test();
+        try {
+            dictionaryController.mainLoop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
